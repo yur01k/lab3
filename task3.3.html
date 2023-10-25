@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Перевірка знань таблиці множення</title>
+</head>
+<body>
+    <h2>Перевірка знань таблиці множення</h2>
+    
+    <p id="score">Загальний рахунок: 0</p>
+    <button id="nextTask">Наступне завдання</button>
+    
+    <p id="task">Питання: 3 x 4 = ?</p>
+    <form id="answerForm">
+        <input type="radio" name="answer" value="" disabled> <label></label><br>
+        <input type="radio" name="answer" value="" disabled> <label></label><br>
+        <input type="radio" name="answer" value="" disabled> <label></label><br>
+        <input type="radio" name="answer" value="" disabled> <label></label><br>
+    </form>
+    <button id="checkAnswer">Перевірити</button>
+    <p id="result"></p>
+    
+    <script>
+        let score = 0;
+        
+        function generateRandomTask() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            const answer = num1 * num2;
+            return { task: `${num1} x ${num2} = ?`, answer: answer };
+        }
+        
+        function updateScore() {
+            document.getElementById('score').textContent = `Загальний рахунок: ${score}`;
+        }
+        
+        const nextTaskButton = document.getElementById('nextTask');
+        const taskText = document.getElementById('task');
+        const answerForm = document.getElementById('answerForm');
+        const radioButtons = answerForm.getElementsByTagName('input');
+        const labels = answerForm.getElementsByTagName('label');
+        const checkButton = document.getElementById('checkAnswer');
+        const resultText = document.getElementById('result');
+        
+        let currentTask = generateRandomTask();
+        taskText.textContent = `Питання: ${currentTask.task}`;
+        
+        function generateRandomAnswers(correctAnswer) {
+            const answers = [correctAnswer];
+            while (answers.length < 4) {
+                const randomAnswer = Math.floor(Math.random() * 100) + 1;
+                if (!answers.includes(randomAnswer) && randomAnswer !== correctAnswer) {
+                    answers.push(randomAnswer);
+                }
+            }
+            return answers;
+        }
+        
+        function setRadioButtons(answers) {
+            for (let i = 0; i < radioButtons.length; i++) {
+                radioButtons[i].value = answers[i];
+                labels[i].textContent = answers[i];
+                radioButtons[i].disabled = false;
+            }
+        }
+        
+        nextTaskButton.addEventListener('click', function () {
+            currentTask = generateRandomTask();
+            taskText.textContent = `Питання: ${currentTask.task}`;
+            resultText.textContent = '';
+            
+            const answers = generateRandomAnswers(currentTask.answer);
+            setRadioButtons(answers);
+        });
+        
+        checkButton.addEventListener('click', function () {
+            for (let i = 0; i < radioButtons.length; i++) {
+                radioButtons[i].disabled = true;
+            }
+            
+            const selectedAnswer = parseInt(answerForm.querySelector('input[name="answer"]:checked').value);
+            
+            if (!isNaN(selectedAnswer)) {
+                if (selectedAnswer === currentTask.answer) {
+                    resultText.textContent = 'Правильно!';
+                    score++;
+                } else {
+                    resultText.textContent = 'Неправильно. Спробуйте ще раз.';
+                }
+                updateScore();
+            } else {
+                resultText.textContent = 'Будь ласка, виберіть відповідь.';
+            }
+        });
+    </script>
+</body>
+</html>

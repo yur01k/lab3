@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Конвертер температури</h2>
+    <label for="fahrenheitInput">Температура за Фаренгейтом:</label>
+    <input type="text" id="fahrenheitInput">
+    <label for="celsiusInput">Температура за Цельсієм:</label>
+    <input type="text" id="celsiusInput">
+    
+    <script>
+        function перевестиФаренгейтВЦельсій(fahrenheit) {
+            return (fahrenheit - 32) * 5/9;
+        }
+
+        function перевестиЦельсійВФаренгейт(celsius) {
+            return (celsius * 9/5) + 32;
+        }
+
+        const полеФаренгейта = document.getElementById('fahrenheitInput');
+        const полеЦельсія = document.getElementById('celsiusInput');
+
+        полеФаренгейта.addEventListener('input', function () {
+            const фаренгейт = parseFloat(this.value);
+            if (!isNaN(фаренгейт)) {
+                const цельсій = перевестиФаренгейтВЦельсій(фаренгейт);
+                полеЦельсія.value = цельсій.toFixed(2);
+            } else {
+                полеЦельсія.value = '';
+            }
+        });
+
+        полеЦельсія.addEventListener('input', function () {
+            const цельсій = parseFloat(this.value);
+            if (!isNaN(цельсій)) {
+                const фаренгейт = перевестиЦельсійВФаренгейт(цельсій);
+                полеФаренгейта.value = фаренгейт.toFixed(2);
+            } else {
+                полеФаренгейта.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
