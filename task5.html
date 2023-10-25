@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CAPTCHA</title>
+    <style>
+        .captcha-container {
+            font-size: 24px;
+        }
+        .captcha-span {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            border: 1px solid #ccc;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Введіть цифри зображені нижче:</h2>
+    <div class="captcha-container" id="captcha-container"></div>
+    <input type="text" id="captcha-input">
+    <button onclick="checkCaptcha()">Перевірити</button>
+    <p id="captcha-message"></p>
+
+    <script>
+        function generateCaptcha(digits) {
+            const captchaContainer = document.getElementById('captcha-container');
+            captchaContainer.innerHTML = '';
+
+            for (let i = 0; i < digits; i++) {
+                const digit = Math.floor(Math.random() * 10);
+                const span = document.createElement('span');
+                span.classList.add('captcha-span');
+                span.textContent = digit;
+                captchaContainer.appendChild(span);
+            }
+        }
+
+        function checkCaptcha() {
+            const captchaInput = document.getElementById('captcha-input');
+            const captchaMessage = document.getElementById('captcha-message');
+            const captchaContainer = document.getElementById('captcha-container');
+            const captchaDigits = Array.from(captchaContainer.querySelectorAll('.captcha-span')).map(span => span.textContent).join('');
+            const userAnswer = captchaInput.value;
+
+            if (userAnswer === captchaDigits) {
+                captchaMessage.textContent = 'Правильно!';
+            } else {
+                captchaMessage.textContent = 'Спробуйте ще раз. Введіть цифри, які ви бачите на зображенні.';
+            }
+        }
+
+        // Ініціалізуємо CAPTCHA з 4 цифрами при завантаженні сторінки
+        generateCaptcha(4);
+    </script>
+</body>
+</html>

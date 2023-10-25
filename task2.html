@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Перевірка знань таблиці множення</title>
+</head>
+<body>
+    <h2>Перевірка знань таблиці множення</h2>
+    
+    <p id="score">Загальний рахунок: 0</p>
+    <button id="nextTask">Наступне завдання</button>
+    
+    <p id="task">Питання: 3 x 4 = ?</p>
+    <input type="text" id="answer" placeholder="Ваша відповідь">
+    <button id="checkAnswer">Перевірити</button>
+    <p id="result"></p>
+    
+    <script>
+        let score = 0;
+        
+        function generateRandomTask() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            const answer = num1 * num2;
+            return { task: `${num1} x ${num2} = ?`, answer: answer };
+        }
+        
+        function updateScore() {
+            document.getElementById('score').textContent = `Загальний рахунок: ${score}`;
+        }
+        
+        const nextTaskButton = document.getElementById('nextTask');
+        const taskText = document.getElementById('task');
+        const answerInput = document.getElementById('answer');
+        const checkButton = document.getElementById('checkAnswer');
+        const resultText = document.getElementById('result');
+        
+        let currentTask = generateRandomTask();
+        taskText.textContent = `Питання: ${currentTask.task}`;
+        
+        nextTaskButton.addEventListener('click', function () {
+            currentTask = generateRandomTask();
+            taskText.textContent = `Питання: ${currentTask.task}`;
+            answerInput.value = '';
+            resultText.textContent = '';
+        });
+        
+        checkButton.addEventListener('click', function () {
+            const userAnswer = parseInt(answerInput.value);
+            if (!isNaN(userAnswer)) {
+                if (userAnswer === currentTask.answer) {
+                    resultText.textContent = 'Правильно!';
+                    score++;
+                } else {
+                    resultText.textContent = 'Неправильно. Спробуйте ще раз.';
+                }
+                updateScore();
+            } else {
+                resultText.textContent = 'Будь ласка, введіть відповідь.';
+            }
+        });
+    </script>
+</body>
+</html>
